@@ -1,11 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Form from './components/formProduto';
 
 function App() {
   return (
     <div className="App">
-      <p>Testando</p>
+      <Form></Form>
     </div>
   );
 }
