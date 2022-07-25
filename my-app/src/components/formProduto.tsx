@@ -2,6 +2,7 @@ import React, { ReactNode, useState } from "react";
 import { isDOMComponent } from "react-dom/test-utils";
 import { useForm } from "react-hook-form";
 import List from "./listProdutos";
+import editaProduto, { EditaProduto } from "./editaProduto";
 
 
 export type Profile = {
@@ -45,6 +46,8 @@ export function Form(){
     ]*/
 
     const [count, setCount] = useState(0);
+    const [editando, setEditando] = useState(99999);
+    const [editandoB, setEditandoB] = useState(false);
 
     const {register, handleSubmit, formState: { errors }} = useForm<Profile>()
 
@@ -54,8 +57,29 @@ export function Form(){
       setCount(count + 1)
     })
 
-  return(
-    <div className="main-index">
+    const childToParent = (id: number, ed: any) => {
+      setEditandoB(ed)
+      setEditando(id)
+    }
+
+    const childToParent2 = (p: Profile[], ed: any) => {
+      setEditandoB(ed);
+      setProdutos(p);
+    }
+
+    const teste = () =>{
+      if(editandoB){
+
+      }
+    }
+    const editaMode = (
+    <EditaProduto  produtos={produtos} id={editando} childToParent={childToParent} childToParent2={childToParent2}></EditaProduto>)
+
+    const nadaMode = (
+      <br></br>
+    )
+
+    const formMode = (
       <div className="form-div">
         {/* Tab nav */}
         <p className="title">Cadastro de Produtos</p>
@@ -65,6 +89,7 @@ export function Form(){
                   <div className="form-input">
                     <div className="form-container">
                       <label className="titulo">Título:</label>
+                      
                       <input {...register("titulo", {required: true})} type="text" id="titulo" className="inputTitulo" placeholder="Digite o Titulo do Produto" />
                       {
                         errors.titulo && <div className="error"> É necessário informar o título do Produto</div>
@@ -104,11 +129,36 @@ export function Form(){
           </nav>
         </div>
       </div>
+    )
+
+  return(
+
+
+    <div className="main-index">
+        
+      <br/>
+      { editandoB ? editaMode : formMode}
       <div className="conteudo">
-          <List produtos={produtos}></List>
+      <List  childToParent={childToParent} produtos={produtos}></List>
       </div>
     </div>
+
+   
   );
 
 };
+
+/*
+ MENU, tá ficando torto quando coloca
+
+    <div className="menu-class">
+      <div className="item-class">
+      <img src="icon-supermarket-white.png" alt="Minha Figura" width="50" height="50"/>
+      </div>
+       <div className="item-class-2">
+         Bem Vindo! Cadastre seus produtos.
+       </div>
+      </div>
+
+*/
 export default Form;

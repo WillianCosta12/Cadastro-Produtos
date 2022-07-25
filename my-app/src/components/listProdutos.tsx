@@ -2,18 +2,38 @@ import React, { ReactNode, useState } from "react";
 import { isDOMComponent } from "react-dom/test-utils";
 import { Profile } from "./formProduto";
 
+
+
 export interface ListProps {
-    produtos: Profile[]
+    produtos: Profile[],
+    childToParent: any
 }
 
 export function List(props: ListProps){ 
 
+    //const [id, setId] = useState(0);
+    //const [edicao, setEdicao] = useState(false);
+
     const [activeContentTab, setActiveContentTab] = useState("Sem Conteúdo");
+    const [prods, setProds] = useState<Profile[]>([]);
 
     const handleTab = (id: string, index:number) => {
       setActiveContentTab(props.produtos[index].descricao);
     };
 
+    
+    const editar = (index: string) => {
+    }
+
+    const remover = (index: string) => {
+        let i = parseInt(index);
+        if(props.produtos.length >0 && props.produtos.length >= i){
+            setProds(props.produtos.splice(i, 1));
+            console.log(props.produtos)
+        }
+    }
+
+    
 
     return(
         <div className="main">
@@ -26,8 +46,8 @@ export function List(props: ListProps){
                         <p><strong>R$</strong> {props.produtos[index].valor}</p>
                         <p><strong>Descrição:</strong> {props.produtos[index].descricao}</p>
                         <div className="button-list">
-                            <button>Editar</button>
-                            <button>Remover</button>
+                            <button onClick={() => props.childToParent(index,true)}>Editar</button>
+                            <button onClick={() =>  remover(""+index)}>Remover</button>
                         </div>
                     </div>
                 )}
